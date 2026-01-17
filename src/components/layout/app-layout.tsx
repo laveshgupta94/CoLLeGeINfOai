@@ -3,7 +3,7 @@
 import { SidebarProvider, Sidebar, SidebarTrigger, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarGroupLabel } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, MessageCircle, BarChart3, Users, Calendar, BookOpen, BrainCircuit, Wrench, LogIn } from 'lucide-react';
+import { LayoutDashboard, MessageCircle, BarChart3, Users, Calendar, BookOpen, BrainCircuit, Wrench, Home } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
 import React from 'react';
@@ -25,6 +25,13 @@ const adminNavItems = [
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
+  const noSidebarRoutes = ['/student/login', '/admin/login', '/'];
+
+  if (noSidebarRoutes.includes(pathname)) {
+    return <main className="flex-1">{children}</main>;
+  }
+
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -39,6 +46,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
+            <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname === '/'} tooltip="Home">
+                  <Link href="/">
+                    <Home />
+                    <span>Home</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             <SidebarGroupLabel>Student</SidebarGroupLabel>
             {studentNavItems.map((item) => (
               <SidebarMenuItem key={item.href}>
@@ -62,15 +77,6 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}
-
-            <SidebarMenuItem className="mt-auto">
-              <SidebarMenuButton asChild isActive={pathname === '/login'} tooltip="Admin Login">
-                <Link href="/login">
-                  <LogIn />
-                  <span>Admin Login</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarContent>
       </Sidebar>

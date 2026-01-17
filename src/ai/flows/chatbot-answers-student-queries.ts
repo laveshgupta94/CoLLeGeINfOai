@@ -35,6 +35,7 @@ const prompt = ai.definePrompt({
   input: {schema: ChatbotAnswersStudentQueriesInputSchema},
   output: {schema: ChatbotAnswersStudentQueriesOutputSchema},
   prompt: `You are CampusAI, a college assistant. Answer the following question in the same language as the question.
+If the answer contains a schedule, timetable, or a list of items, format it as a Markdown table for clarity.
 
   Here is some data about college events:
   {{events}}

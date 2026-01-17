@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { KnowledgeItem, mockKnowledgeBase } from '@/lib/mock-data';
@@ -8,21 +8,26 @@ import { KnowledgeFormValues, knowledgeSchema } from '@/lib/schemas';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription, DialogClose } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { PlusCircle, MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { PlusCircle, MoreHorizontal, Pencil, Trash2, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Badge } from '../ui/badge';
 import { formatDistanceToNow } from 'date-fns';
+import { analyzeDocumentAction } from '@/app/admin/knowledge/actions';
+import { Separator } from '../ui/separator';
+import { Label } from '../ui/label';
 
 export function KnowledgeUploader() {
   const [items, setItems] = useState<KnowledgeItem[]>(mockKnowledgeBase);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<KnowledgeItem | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { toast } = useToast();
 
@@ -30,6 +35,48 @@ export function KnowledgeUploader() {
     resolver: zodResolver(knowledgeSchema),
     defaultValues: { category: '', title: '', description: '' },
   });
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== 'text/plain') {
+      toast({
+        variant: 'destructive',
+        title: 'Invalid File Type',
+        description: 'Please upload a .txt file.',
+      });
+      return;
+    }
+
+    const content = await file.text();
+    setIsAnalyzing(true);
+
+    const result = await analyzeDocumentAction(content);
+
+    setIsAnalyzing(false);
+
+    if ('error' in result) {
+      toast({
+        variant: 'destructive',
+        title: 'Analysis Failed',
+        description: result.error,
+      });
+    } else {
+      form.setValue('title', result.title);
+      form.setValue('category', result.category);
+      form.setValue('description', result.description);
+      toast({
+        title: 'Analysis Complete',
+        description: 'The form has been pre-filled with the analysis results.',
+      });
+    }
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
 
   const openForm = (item?: KnowledgeItem) => {
     if (item) {
@@ -140,12 +187,21 @@ export function KnowledgeUploader() {
       </CardContent>
 
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="font-headline">{editingItem ? 'Edit Item' : 'Add Knowledge Item'}</DialogTitle>
+             <DialogDescription>
+              Add content manually or upload a .txt file to have the AI analyze it for you.
+            </DialogDescription>
           </DialogHeader>
+          <div className="space-y-2 pt-4">
+              <Label htmlFor="file-upload">Analyze from file (optional)</Label>
+              <Input id="file-upload" type="file" accept=".txt" onChange={handleFileChange} ref={fileInputRef} disabled={isAnalyzing} />
+              {isAnalyzing && <p className="text-sm text-muted-foreground flex items-center gap-2"><Loader2 className="animate-spin h-4 w-4" /> Analyzing document...</p>}
+          </div>
+          <Separator className="my-4" />
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField name="title" control={form.control} render={({ field }) => (
                 <FormItem><FormLabel>Title</FormLabel><FormControl><Input placeholder="e.g., Library Rules" {...field} /></FormControl><FormMessage /></FormItem>
               )} />
@@ -153,7 +209,7 @@ export function KnowledgeUploader() {
                 <FormItem><FormLabel>Category</FormLabel><FormControl><Input placeholder="e.g., FAQs, Rules" {...field} /></FormControl><FormMessage /></FormItem>
               )} />
               <FormField name="description" control={form.control} render={({ field }) => (
-                <FormItem><FormLabel>Content / Description</FormLabel><FormControl><Textarea placeholder="The full content for the AI to use." {...field} /></FormControl><FormMessage /></FormItem>
+                <FormItem><FormLabel>Content / Description</FormLabel><FormControl><Textarea placeholder="The full content for the AI to use." rows={8} {...field} /></FormControl><FormMessage /></FormItem>
               )} />
               <DialogFooter>
                 <DialogClose asChild><Button type="button" variant="ghost">Cancel</Button></DialogClose>
