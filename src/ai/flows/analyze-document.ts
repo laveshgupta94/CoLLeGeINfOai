@@ -10,12 +10,12 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const AnalyzeDocumentInputSchema = z.object({
+const AnalyzeDocumentInputSchema = z.object({
   content: z.string().describe('The text content of the document to analyze.'),
 });
 export type AnalyzeDocumentInput = z.infer<typeof AnalyzeDocumentInputSchema>;
 
-export const AnalyzeDocumentOutputSchema = z.object({
+const AnalyzeDocumentOutputSchema = z.object({
   title: z.string().describe('A suitable title for the document.'),
   category: z.string().describe('A suggested category for the document (e.g., "FAQs", "Rules", "Timetable").'),
   description: z.string().describe('A concise summary or the full content of the document, if it is short.'),
