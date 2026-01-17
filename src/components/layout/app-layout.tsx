@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, MessageCircle, BarChart3, Users, Calendar, BookOpen, UploadCloud, Wrench, Home } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const studentNavItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -24,6 +24,12 @@ const adminNavItems = [
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
 
   const noSidebarRoutes = ['/student/login', '/admin/login', '/'];
 
@@ -57,7 +63,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
             
-            {isStudentArea && (
+            {mounted && isStudentArea && (
               <>
                 <SidebarGroupLabel>Student</SidebarGroupLabel>
                 {studentNavItems.map((item) => (
@@ -73,7 +79,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </>
             )}
             
-            {isAdminArea && (
+            {mounted && isAdminArea && (
               <>
                 <SidebarGroupLabel className="mt-4">Admin</SidebarGroupLabel>
                 {adminNavItems.map((item) => (
