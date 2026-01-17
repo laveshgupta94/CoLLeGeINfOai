@@ -94,25 +94,25 @@ export function KnowledgeUploader() {
     if (editingItem) {
       const updatedItems = items.map(i => i.id === editingItem.id ? { ...i, ...data, updated_at: new Date().toISOString() } : i);
       setItems(updatedItems);
-      toast({ title: "Success", description: "Knowledge item updated." });
+      toast({ title: "Success", description: "Information item updated." });
     } else {
       const newItem: KnowledgeItem = { id: `kb${Date.now()}`, ...data, updated_at: new Date().toISOString() };
       setItems([newItem, ...items]);
-      toast({ title: "Success", description: "New knowledge item added." });
+      toast({ title: "Success", description: "New information item added." });
     }
     setIsFormOpen(false);
   };
 
   const deleteItem = (id: string) => {
     setItems(items.filter(i => i.id !== id));
-    toast({ title: "Success", description: "Knowledge item deleted.", variant: "destructive" });
+    toast({ title: "Success", description: "Information item deleted.", variant: "destructive" });
   };
 
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="font-headline">AI Knowledge Base</CardTitle>
+          <CardTitle className="font-headline">Uploading Information</CardTitle>
           <CardDescription>Manage content used by the AI chatbot to answer questions.</CardDescription>
         </div>
         <Button onClick={() => openForm()}>
@@ -160,7 +160,7 @@ export function KnowledgeUploader() {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  This will permanently delete the knowledge item "{item.title}".
+                                  This will permanently delete the information item "{item.title}".
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
@@ -177,7 +177,7 @@ export function KnowledgeUploader() {
               ) : (
                 <TableRow>
                   <TableCell colSpan={4} className="h-24 text-center">
-                    No knowledge items found.
+                    No information items found.
                   </TableCell>
                 </TableRow>
               )}
@@ -189,7 +189,7 @@ export function KnowledgeUploader() {
       <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-headline">{editingItem ? 'Edit Item' : 'Add Knowledge Item'}</DialogTitle>
+            <DialogTitle className="font-headline">{editingItem ? 'Edit Item' : 'Add Information Item'}</DialogTitle>
              <DialogDescription>
               Add content manually or upload a .txt file to have the AI analyze it for you.
             </DialogDescription>

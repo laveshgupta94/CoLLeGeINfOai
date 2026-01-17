@@ -3,7 +3,7 @@
 import { SidebarProvider, Sidebar, SidebarTrigger, SidebarInset, SidebarHeader, SidebarContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarGroupLabel } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, MessageCircle, BarChart3, Users, Calendar, BookOpen, BrainCircuit, Wrench, Home } from 'lucide-react';
+import { LayoutDashboard, MessageCircle, BarChart3, Users, Calendar, BookOpen, UploadCloud, Wrench, Home } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
 import React from 'react';
@@ -19,7 +19,7 @@ const adminNavItems = [
   { href: '/admin/events', label: 'Events', icon: Calendar },
   { href: '/admin/exams', label: 'Exams', icon: BookOpen },
   { href: '/admin/attendance', label: 'Attendance Rules', icon: Wrench },
-  { href: '/admin/knowledge', label: 'Knowledge Base', icon: BrainCircuit },
+  { href: '/admin/knowledge', label: 'Uploading Information', icon: UploadCloud },
 ];
 
 export function AppLayout({ children }: { children: React.ReactNode }) {

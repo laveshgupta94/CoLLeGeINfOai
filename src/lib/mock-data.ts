@@ -65,6 +65,21 @@ export const mockExams: Exam[] = [
             { subject: 'Computer Science', date: '2024-11-05', time: '09:00 AM' },
             { subject: 'Mathematics', date: '2024-11-07', time: '09:00 AM' },
             { subject: 'Physics', date: '2024-11-09', time: '09:00 AM' },
+            { subject: 'Chemistry', date: '2024-11-11', time: '09:00 AM' },
+            { subject: 'English', date: '2024-11-13', time: '09:00 AM' },
+        ],
+    },
+    {
+        id: 'exam2',
+        exam_name: 'Final Examinations',
+        start_date: '2025-04-20',
+        end_date: '2025-05-05',
+        subjects: [
+            { subject: 'Data Structures', date: '2025-04-20', time: '01:00 PM' },
+            { subject: 'Algorithms', date: '2025-04-22', time: '01:00 PM' },
+            { subject: 'Database Systems', date: '2025-04-25', time: '01:00 PM' },
+            { subject: 'Operating Systems', date: '2025-04-28', time: '01:00 PM' },
+            { subject: 'Networks', date: '2025-04-30', time: '01:00 PM' },
         ],
     },
 ];

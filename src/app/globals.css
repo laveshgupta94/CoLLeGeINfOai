@@ -72,4 +72,10 @@
   body {
     @apply bg-background text-foreground;
   }
+  .markdown-content table { @apply my-2 w-full text-sm; }
+  .markdown-content thead { @apply border-b; }
+  .markdown-content th { @apply px-2 py-1 text-left font-semibold text-muted-foreground; }
+  .markdown-content tbody tr { @apply border-b; }
+  .markdown-content td { @apply p-2 align-top; }
+  .markdown-content p { @apply my-2; }
 }

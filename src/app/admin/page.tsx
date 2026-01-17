@@ -1,12 +1,12 @@
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, Calendar, BookOpen, Wrench, BrainCircuit, ArrowRight } from 'lucide-react';
+import { Users, Calendar, BookOpen, Wrench, UploadCloud, ArrowRight } from 'lucide-react';
 import Link from "next/link";
 
 const adminFeatures = [
     { title: "Manage Events", href: "/admin/events", icon: Calendar, description: "Add, update, and delete college events." },
     { title: "Manage Exams", href: "/admin/exams", icon: BookOpen, description: "Upload and edit exam timetables." },
     { title: "Attendance Rules", href: "/admin/attendance", icon: Wrench, description: "Set minimum attendance percentages." },
-    { title: "Knowledge Base", href: "/admin/knowledge", icon: BrainCircuit, description: "Manage content for the AI chatbot." },
+    { title: "Uploading Information", href: "/admin/knowledge", icon: UploadCloud, description: "Manage content for the AI chatbot." },
 ];
 
 export default function AdminDashboard() {

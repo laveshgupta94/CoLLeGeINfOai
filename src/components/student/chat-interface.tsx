@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useTransition } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -74,7 +75,13 @@ export function ChatInterface() {
                                     </Avatar>
                                 )}
                                 <div className={cn('max-w-[80%] rounded-lg px-4 py-2 shadow-sm', message.role === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted')}>
-                                    <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                                    {message.role === 'assistant' ? (
+                                        <div className="markdown-content text-sm">
+                                            <ReactMarkdown>{message.text}</ReactMarkdown>
+                                        </div>
+                                    ) : (
+                                        <p className="text-sm">{message.text}</p>
+                                    )}
                                 </div>
                                 {message.role === 'user' && (
                                     <Avatar className="h-8 w-8 border">
