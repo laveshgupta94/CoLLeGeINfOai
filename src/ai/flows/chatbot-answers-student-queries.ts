@@ -35,22 +35,36 @@ const prompt = ai.definePrompt({
   input: {schema: ChatbotAnswersStudentQueriesInputSchema},
   output: {schema: ChatbotAnswersStudentQueriesOutputSchema},
   prompt: `You are CampusAI, a college assistant. Answer the following question in the same language as the question.
-If the answer contains a schedule, timetable, or a list of items, format it as a Markdown table for clarity.
+When providing information about schedules or timetables (like exam schedules), you MUST format it as a Markdown table.
+The table should have columns for Subject, Date, and Time.
+Do not include the ID or exam name in the table itself, but you can mention the exam name in the text preceding the table.
 
-  Here is some data about college events:
-  {{events}}
+For example, a response about an exam schedule should look like this:
 
-  Here is some data about exam schedules:
-  {{exams}}
+Here is the schedule for the Mid-Term Examinations:
 
-  Here are the attendance rules:
-  {{attendanceRules}}
+| Subject          | Date         | Time      |
+|------------------|--------------|-----------|
+| Computer Science | Nov 5, 2024  | 9:00 AM   |
+| Mathematics      | Nov 7, 2024  | 9:00 AM   |
 
-  Here is some general college information:
-  {{knowledgeBase}}
+---
+CONTEXT:
+Here is some data about college events:
+{{events}}
 
-  Now, answer the following question:
-  {{query}}`,
+Here is some data about exam schedules:
+{{exams}}
+
+Here are the attendance rules:
+{{attendanceRules}}
+
+Here is some general college information:
+{{knowledgeBase}}
+---
+
+Now, answer the following student question:
+{{query}}`,
 });
 
 const chatbotAnswersStudentQueriesFlow = ai.defineFlow(
