@@ -56,3 +56,5 @@ Gemini 1.5 Flash / Pro
 Vector embeddings for semantic search
 
 RAG-enabled response knowledge base
+
+It is live Go and check-https://co-l-le-ge-i-nf-oai-git-main-lavesh-guptas-projects-87045a73.vercel.app?_vercel_share=weIKH2i0KmrwxCu5ilGXH7vBMb7ZNZyf
